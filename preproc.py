@@ -138,7 +138,7 @@ def pos_bins_to_coords(pos_bins: np.array) -> np.array:
     coord_min, size = -12.5, 25
     bin_width = size / num_bins
     # Need to offset bin number by -1 for zero-based indexing of bin horizontal/vertical index
-    h, v = (pos_bins - 1) % num_bins, ((pos_bins - 1) // num_bins) + 1
+    h, v = (pos_bins - 1) % num_bins, (pos_bins - 1) // num_bins
     # Take center of bin as position coordinate
     x, y = coord_min + (h + 0.5) * bin_width, coord_min + (v + 0.5) * bin_width
     return np.vstack((x, y)).T
@@ -153,7 +153,7 @@ def pos_coords_to_bins(coords: np.array) -> int:
     # Convert to row/column number for each axis
     h, v = int(np.floor((x - coord_min)/bin_width)), int(np.floor((y - coord_min)/bin_width))
     # Combine to get actual bin number
-    return (v - 1) * num_bins + h
+    return v * num_bins + h + 1
 
 def spike_trains_from_times(spike_times: list, timepoints: np.array) -> np.array:
     # Converts spike times to spiketrain, returns a (n, l) shaped array
